@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serviqo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body>
+    <div class="auth-page">
+      <aside class="auth-hero">
+        <div class="auth-hero-grid"></div>
+
+        <div class="auth-brand">
+          <div class="auth-logo">🍽</div>
+          <div>
+            <div class="auth-brand-name">SERVIQO</div>
+          </div>
+        </div>
+
+        <div class="auth-hero-body">
+          <h1 class="auth-hero-title">
+            Fine Dining,<br /><span>Reimagined.</span>
+          </h1>
+          <p class="auth-hero-desc">
+            A seamless restaurant experience - digital menus, instant waiter
+            calls, and effortless billing, all from one platform.
+          </p>
+          <div class="auth-features">
+            <div class="auth-feature">
+              <div class="auth-feature-icon">📱</div>
+              <span class="auth-feature-text"
+                >QR-code digital menus for every table</span
+              >
+            </div>
+            <div class="auth-feature">
+              <div class="auth-feature-icon">🔔</div>
+              <span class="auth-feature-text"
+                >One-tap waiter and bill requests</span
+              >
+            </div>
+            <div class="auth-feature">
+              <div class="auth-feature-icon">📊</div>
+              <span class="auth-feature-text"
+                >Real-time order and table management</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <blockquote class="auth-quote">
+          "Good food is the foundation of genuine happiness."
+        </blockquote>
+      </aside>
+
+      <main class="auth-panel">
+        <div class="auth-panel-inner">
+          <h2 class="auth-panel-title">Welcome back</h2>
+          <p class="auth-panel-sub">
+            Sign in to your Serviqo account to continue
+          </p>
+
+          <div class="auth-card">
+            <form id="loginForm" novalidate>
+              <div class="form-group">
+                <label class="label" for="email">Email address</label>
+                <div class="input-wrap">
+                  <span class="input-icon">✉</span>
+                  <input
+                    class="input"
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="admin@serviqo.com"
+                    autocomplete="email"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="label" for="password">Password</label>
+                <div class="input-wrap">
+                  <span class="input-icon">🔑</span>
+                  <input
+                    class="input"
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="••••••••"
+                    autocomplete="current-password"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div id="loginError" class="form-error"></div>
+
+              <button
+                class="btn btn-primary btn-full btn-lg"
+                type="submit"
+                style="margin-top: 24px"
+              >
+                Sign In
+              </button>
+            </form>
+
+            <div class="divider-text">or</div>
+
+            <a
+              href="pages/menu.html?table=a3f8c2d1e4b7f09a6c5e2d8b1f4a7c0e3d6b9f2a5c8e1d4b7f0a3c6e9d2b5"
+              class="btn btn-outline btn-full"
+            >
+              👀 Preview Menu (Table 1)
+            </a>
+          </div>
+
+          <p class="auth-footer">
+            Don't have an account? <a href="pages/register.html">Create one</a>
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="assets/js/script.js"></script>
+  </body>
+</html>

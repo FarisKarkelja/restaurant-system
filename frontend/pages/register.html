@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serviqo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+  <body>
+    <div class="auth-page">
+      <aside class="auth-hero">
+        <div class="auth-hero-grid"></div>
+
+        <div class="auth-brand">
+          <div class="auth-logo">🍽</div>
+          <div>
+            <div class="auth-brand-name">SERVIQO</div>
+          </div>
+        </div>
+
+        <div class="auth-hero-body">
+          <h1 class="auth-hero-title">
+            Join the<br /><span>Experience.</span>
+          </h1>
+          <p class="auth-hero-desc">
+            Create your Serviqo account and gain access to the full restaurant
+            management suite - menus, tables, orders, and more.
+          </p>
+          <div class="auth-features">
+            <div class="auth-feature">
+              <div class="auth-feature-icon">🍽</div>
+              <span class="auth-feature-text"
+                >Manage your full menu with ease</span
+              >
+            </div>
+            <div class="auth-feature">
+              <div class="auth-feature-icon">🪑</div>
+              <span class="auth-feature-text"
+                >Real-time table and order tracking</span
+              >
+            </div>
+            <div class="auth-feature">
+              <div class="auth-feature-icon">📈</div>
+              <span class="auth-feature-text"
+                >Insights and reporting at a glance</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <blockquote class="auth-quote">
+          "A great restaurant doesn't make its money - it earns its guests."
+        </blockquote>
+      </aside>
+
+      <main class="auth-panel">
+        <div class="auth-panel-inner">
+          <h2 class="auth-panel-title">Create an account</h2>
+          <p class="auth-panel-sub">Get started with Serviqo in seconds</p>
+
+          <div class="auth-card">
+            <form id="registerForm" novalidate>
+              <div class="form-group">
+                <label class="label" for="name">Full name</label>
+                <div class="input-wrap">
+                  <span class="input-icon">👤</span>
+                  <input
+                    class="input"
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="John Smith"
+                    autocomplete="name"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="label" for="email">Email address</label>
+                <div class="input-wrap">
+                  <span class="input-icon">✉</span>
+                  <input
+                    class="input"
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="label" for="password">Password</label>
+                <div class="input-wrap">
+                  <span class="input-icon">🔑</span>
+                  <input
+                    class="input"
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Min. 8 characters"
+                    autocomplete="new-password"
+                    required
+                    minlength="8"
+                  />
+                </div>
+                <div
+                  class="pw-strength-bar"
+                  id="pwBar"
+                  style="
+                    height: 3px;
+                    border-radius: 2px;
+                    background: var(--border);
+                    margin-top: 6px;
+                    overflow: hidden;
+                  "
+                >
+                  <div
+                    id="pwFill"
+                    style="
+                      height: 100%;
+                      width: 0;
+                      border-radius: 2px;
+                      transition:
+                        width 0.4s ease,
+                        background 0.4s ease;
+                    "
+                  ></div>
+                </div>
+                <span
+                  id="pwHint"
+                  style="
+                    font-size: 0.75rem;
+                    color: var(--text-3);
+                    margin-top: 4px;
+                  "
+                ></span>
+              </div>
+
+              <div class="form-group">
+                <label class="label" for="confirm">Confirm password</label>
+                <div class="input-wrap">
+                  <span class="input-icon">🔒</span>
+                  <input
+                    class="input"
+                    type="password"
+                    id="confirm"
+                    name="confirm"
+                    placeholder="Repeat password"
+                    autocomplete="new-password"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div id="registerError" class="form-error"></div>
+              <div id="registerSuccess" class="form-success"></div>
+
+              <button
+                class="btn btn-primary btn-full btn-lg"
+                type="submit"
+                style="margin-top: 24px"
+              >
+                Create Account
+              </button>
+            </form>
+          </div>
+
+          <p class="auth-footer">
+            Already have an account? <a href="../index.html">Sign in</a>
+          </p>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/script.js"></script>
+  </body>
+</html>

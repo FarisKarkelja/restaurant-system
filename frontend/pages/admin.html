@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serviqo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+  <body>
+    <div class="admin-page">
+      <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-logo">🍽</div>
+          <div>
+            <div class="sidebar-name">SERVIQO</div>
+            <div class="sidebar-role">Admin Panel</div>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="nav-section">
+            <span class="nav-section-label">Overview</span>
+            <a class="nav-item active" href="#dashboard">
+              <span class="nav-icon">📊</span> Dashboard
+            </a>
+          </div>
+          <div class="nav-section">
+            <span class="nav-section-label">Restaurant</span>
+            <a class="nav-item" href="#tables">
+              <span class="nav-icon">🪑</span> Tables
+            </a>
+            <a class="nav-item" href="#orders">
+              <span class="nav-icon">📋</span> Orders
+              <span class="nav-badge">3</span>
+            </a>
+            <a class="nav-item" href="#requests">
+              <span class="nav-icon">🔔</span> Requests
+              <span class="nav-badge">2</span>
+            </a>
+          </div>
+          <div class="nav-section">
+            <span class="nav-section-label">Catalogue</span>
+            <a class="nav-item" href="#menu">
+              <span class="nav-icon">🍽</span> Menu Items
+            </a>
+            <a class="nav-item" href="#categories">
+              <span class="nav-icon">🗂</span> Categories
+            </a>
+          </div>
+          <div class="nav-section">
+            <span class="nav-section-label">System</span>
+            <a class="nav-item" href="#users">
+              <span class="nav-icon">👥</span> Users
+            </a>
+            <a class="nav-item" href="#settings">
+              <span class="nav-icon">⚙️</span> Settings
+            </a>
+          </div>
+        </nav>
+
+        <div class="sidebar-footer">
+          <div class="sidebar-user">
+            <div class="sidebar-avatar">A</div>
+            <div>
+              <div class="sidebar-user-name">Admin</div>
+              <div class="sidebar-user-sub">admin@serviqo.com</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <div class="admin-main">
+        <header class="admin-topbar">
+          <div class="topbar-left">
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+              <span></span><span></span><span></span>
+            </button>
+            <h1 class="topbar-title">Dashboard</h1>
+          </div>
+          <div class="topbar-right">
+            <a
+              href="menu.html?table=a3f8c2d1e4b7f09a6c5e2d8b1f4a7c0e3d6b9f2a5c8e1d4b7f0a3c6e9d2b5"
+              class="btn btn-outline btn-sm"
+              target="_blank"
+            >
+              👁 Preview Menu
+            </a>
+            <a href="../index.html" class="btn btn-ghost btn-sm">Sign out</a>
+          </div>
+        </header>
+
+        <main class="admin-content">
+          <div class="stats-grid">
+            <div class="stat-card stat-card-gold">
+              <div class="stat-glow"></div>
+              <div class="stat-icon">🪑</div>
+              <div class="stat-value">3</div>
+              <div class="stat-label">Active Tables</div>
+              <div class="stat-trend up">↑ 2 since yesterday</div>
+            </div>
+
+            <div class="stat-card stat-card-green">
+              <div class="stat-glow"></div>
+              <div class="stat-icon">📋</div>
+              <div class="stat-value">12</div>
+              <div class="stat-label">Today's Orders</div>
+              <div class="stat-trend up">↑ 4 vs last week</div>
+            </div>
+
+            <div class="stat-card stat-card-red">
+              <div class="stat-glow"></div>
+              <div class="stat-icon">🔔</div>
+              <div class="stat-value">2</div>
+              <div class="stat-label">Pending Requests</div>
+              <div class="stat-trend down">↓ needs attention</div>
+            </div>
+
+            <div class="stat-card stat-card-blue">
+              <div class="stat-glow"></div>
+              <div class="stat-icon">💰</div>
+              <div class="stat-value">$284</div>
+              <div class="stat-label">Today's Revenue</div>
+              <div class="stat-trend up">↑ 18% vs avg</div>
+            </div>
+          </div>
+
+          <div class="admin-grid">
+            <div class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Tables</span>
+                <span class="badge badge-neutral">5 total</span>
+              </div>
+              <div class="panel-body">
+                <div class="tables-grid">
+                  <div class="table-tile occupied">
+                    <div class="tile-num">1</div>
+                    <div class="tile-cap">2 seats</div>
+                    <div class="tile-dot"></div>
+                  </div>
+                  <div class="table-tile available">
+                    <div class="tile-num">2</div>
+                    <div class="tile-cap">4 seats</div>
+                    <div class="tile-dot"></div>
+                  </div>
+                  <div class="table-tile occupied">
+                    <div class="tile-num">3</div>
+                    <div class="tile-cap">4 seats</div>
+                    <div class="tile-dot"></div>
+                  </div>
+                  <div class="table-tile reserved">
+                    <div class="tile-num">4</div>
+                    <div class="tile-cap">6 seats</div>
+                    <div class="tile-dot"></div>
+                  </div>
+                  <div class="table-tile occupied">
+                    <div class="tile-num">5</div>
+                    <div class="tile-cap">2 seats</div>
+                    <div class="tile-dot"></div>
+                  </div>
+                </div>
+
+                <div
+                  style="
+                    display: flex;
+                    gap: 16px;
+                    margin-top: 18px;
+                    font-size: 0.78rem;
+                    color: var(--text-2);
+                  "
+                >
+                  <span style="display: flex; align-items: center; gap: 6px">
+                    <span
+                      style="
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: var(--green);
+                        display: inline-block;
+                      "
+                    ></span>
+                    Available
+                  </span>
+                  <span style="display: flex; align-items: center; gap: 6px">
+                    <span
+                      style="
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: var(--gold);
+                        display: inline-block;
+                      "
+                    ></span>
+                    Occupied
+                  </span>
+                  <span style="display: flex; align-items: center; gap: 6px">
+                    <span
+                      style="
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: var(--red);
+                        display: inline-block;
+                      "
+                    ></span>
+                    Reserved
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Pending Requests</span>
+                <span class="badge badge-red">2 open</span>
+              </div>
+              <div class="panel-body-sm">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Table</th>
+                      <th>Type</th>
+                      <th>Time</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Table 1</strong></td>
+                      <td><span class="badge badge-amber">🔔 Waiter</span></td>
+                      <td style="color: var(--text-3); font-size: 0.8rem">
+                        2 min ago
+                      </td>
+                      <td>
+                        <button class="btn btn-success btn-sm">Resolve</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><strong>Table 3</strong></td>
+                      <td><span class="badge badge-gold">🧾 Bill</span></td>
+                      <td style="color: var(--text-3); font-size: 0.8rem">
+                        5 min ago
+                      </td>
+                      <td>
+                        <button class="btn btn-success btn-sm">Resolve</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel" style="margin-bottom: 20px">
+            <div class="panel-head">
+              <span class="panel-title">Recent Orders</span>
+              <button class="btn btn-ghost btn-sm">View all</button>
+            </div>
+            <div class="panel-body-sm">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Table</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Time</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style="color: var(--text-3); font-size: 0.8rem">
+                      #001
+                    </td>
+                    <td><strong>Table 1</strong></td>
+                    <td>Bruschetta, Grilled Salmon, House Wine</td>
+                    <td><strong>$32.40</strong></td>
+                    <td>
+                      <span class="status-dot s-preparing">Preparing</span>
+                    </td>
+                    <td style="color: var(--text-3); font-size: 0.8rem">
+                      14:23
+                    </td>
+                    <td><button class="btn btn-ghost btn-sm">View</button></td>
+                  </tr>
+                  <tr>
+                    <td style="color: var(--text-3); font-size: 0.8rem">
+                      #002
+                    </td>
+                    <td><strong>Table 3</strong></td>
+                    <td>Beef Tenderloin, Tiramisu, Sparkling Water ×2</td>
+                    <td><strong>$41.50</strong></td>
+                    <td><span class="status-dot s-served">Served</span></td>
+                    <td style="color: var(--text-3); font-size: 0.8rem">
+                      14:07
+                    </td>
+                    <td><button class="btn btn-ghost btn-sm">View</button></td>
+                  </tr>
+                  <tr>
+                    <td style="color: var(--text-3); font-size: 0.8rem">
+                      #003
+                    </td>
+                    <td><strong>Table 5</strong></td>
+                    <td>Margherita Pizza, Craft Lemonade ×2</td>
+                    <td><strong>$21.00</strong></td>
+                    <td><span class="status-dot s-pending">Pending</span></td>
+                    <td style="color: var(--text-3); font-size: 0.8rem">
+                      14:31
+                    </td>
+                    <td><button class="btn btn-ghost btn-sm">View</button></td>
+                  </tr>
+                  <tr>
+                    <td style="color: var(--text-3); font-size: 0.8rem">
+                      #004
+                    </td>
+                    <td><strong>Table 2</strong></td>
+                    <td>Chicken Wings, Pasta Primavera, House Wine</td>
+                    <td><strong>$29.40</strong></td>
+                    <td><span class="status-dot s-paid">Paid</span></td>
+                    <td style="color: var(--text-3); font-size: 0.8rem">
+                      13:55
+                    </td>
+                    <td><button class="btn btn-ghost btn-sm">View</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">
+              <span class="panel-title">Menu Items</span>
+              <button class="btn btn-primary btn-sm">+ Add Item</button>
+            </div>
+            <div class="panel-body-sm">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Bruschetta</strong></td>
+                    <td><span class="badge badge-neutral">Starters</span></td>
+                    <td>$6.50</td>
+                    <td>
+                      <span class="status-dot s-available">Available</span>
+                    </td>
+                    <td style="display: flex; gap: 6px">
+                      <button class="btn btn-ghost btn-sm">Edit</button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Soup of the Day</strong></td>
+                    <td><span class="badge badge-neutral">Starters</span></td>
+                    <td>$5.00</td>
+                    <td>
+                      <span class="status-dot s-available">Available</span>
+                    </td>
+                    <td style="display: flex; gap: 6px">
+                      <button class="btn btn-ghost btn-sm">Edit</button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Grilled Salmon</strong></td>
+                    <td><span class="badge badge-neutral">Mains</span></td>
+                    <td>$18.90</td>
+                    <td>
+                      <span class="status-dot s-available">Available</span>
+                    </td>
+                    <td style="display: flex; gap: 6px">
+                      <button class="btn btn-ghost btn-sm">Edit</button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Beef Tenderloin</strong></td>
+                    <td><span class="badge badge-neutral">Mains</span></td>
+                    <td>$26.00</td>
+                    <td>
+                      <span class="status-dot s-available">Available</span>
+                    </td>
+                    <td style="display: flex; gap: 6px">
+                      <button class="btn btn-ghost btn-sm">Edit</button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Tiramisu</strong></td>
+                    <td><span class="badge badge-neutral">Desserts</span></td>
+                    <td>$7.00</td>
+                    <td>
+                      <span class="status-dot s-available">Available</span>
+                    </td>
+                    <td style="display: flex; gap: 6px">
+                      <button class="btn btn-ghost btn-sm">Edit</button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>House Wine</strong></td>
+                    <td><span class="badge badge-neutral">Drinks</span></td>
+                    <td>$7.00</td>
+                    <td>
+                      <span class="status-dot s-available">Available</span>
+                    </td>
+                    <td style="display: flex; gap: 6px">
+                      <button class="btn btn-ghost btn-sm">Edit</button>
+                      <button class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script src="../assets/js/script.js"></script>
+  </body>
+</html>
