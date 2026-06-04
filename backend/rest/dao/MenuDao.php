@@ -4,18 +4,21 @@ class MenuDao
 {
     private PDO $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Database::connect();
     }
 
-    public function getCategories(): array {
+    public function getCategories(): array
+    {
         $stmt = $this->db->query(
             'SELECT * FROM categories WHERE is_active = 1 ORDER BY display_order ASC'
         );
         return $stmt->fetchAll();
     }
 
-    public function getMenuItems(array $filters = []): array {
+    public function getMenuItems(array $filters = []): array
+    {
         $sql = 'SELECT mi.*, c.name AS category_name
                 FROM menu_items mi
                 JOIN categories c ON mi.category_id = c.id
@@ -38,5 +41,15 @@ class MenuDao
         $stmt = $this->db->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll();
+    }
+
+    public function getItemById(int $id): ?array
+    {
+        $stmt = $this->db->prepare(
+            'SELECT * FROM menu_items WHERE id = :id LIMIT 1'
+        );
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch();
+        return $row ?: null;
     }
 }

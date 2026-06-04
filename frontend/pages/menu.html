@@ -1,121 +1,116 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Serviqo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="../assets/css/style.css" />
-  </head>
-  <body>
-    <div class="menu-page">
-      <header class="menu-header">
-        <div class="menu-header-inner">
-          <div
-            style="
-              display: flex;
-              align-items: center;
-              gap: 10px;
-              flex-shrink: 0;
-            "
-          >
-            <div class="menu-logo">🍽</div>
-            <span class="menu-brand-name">SERVIQO</span>
-          </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serviqo — Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
 
-          <div class="table-chip">
-            <span class="table-chip-dot"></span>
-            <span id="tableLabel">Table -</span>
-          </div>
+<div class="menu-page">
 
-          <div class="menu-search-wrap">
-            <span class="menu-search-icon">🔍</span>
-            <input
-              class="menu-search"
-              type="search"
-              id="menuSearch"
-              placeholder="Search dishes…"
-              autocomplete="off"
-            />
-          </div>
-        </div>
-      </header>
-
-      <nav class="cat-nav" aria-label="Menu categories">
-        <div class="cat-nav-inner" id="catNav">
-          <button class="cat-btn active" data-cat="all">🍴 All</button>
-        </div>
-      </nav>
-
-      <div class="dietary-nav" id="dietaryNav">
-        <div class="dietary-nav-inner">
-          <span class="dietary-label">Dietary:</span>
-          <button class="diet-btn" data-filter="vegan">🌱 Vegan</button>
-          <button class="diet-btn" data-filter="vegetarian">
-            🥬 Vegetarian
-          </button>
-          <button class="diet-btn" data-filter="halal">☪ Halal</button>
-          <button class="diet-btn" data-filter="gf">🌾 Gluten-Free</button>
-          <button class="diet-btn" data-filter="spicy">🌶 Spicy</button>
-        </div>
+  <header class="menu-header">
+    <div class="menu-header-inner">
+      <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+        <div class="menu-logo">🍽</div>
+        <span class="menu-brand-name">SERVIQO</span>
       </div>
 
-      <main class="menu-body" id="menuBody">
-        <div class="menu-loading" id="menuLoading">
-          <div class="skeleton-grid">
-            <div class="skeleton-card">
-              <div class="skeleton sk-img"></div>
-              <div class="skeleton sk-line sk-line-l"></div>
-              <div class="skeleton sk-line sk-line-m"></div>
-              <div class="skeleton sk-line sk-line-s"></div>
-            </div>
-            <div class="skeleton-card">
-              <div class="skeleton sk-img"></div>
-              <div class="skeleton sk-line sk-line-l"></div>
-              <div class="skeleton sk-line sk-line-m"></div>
-              <div class="skeleton sk-line sk-line-s"></div>
-            </div>
-            <div class="skeleton-card">
-              <div class="skeleton sk-img"></div>
-              <div class="skeleton sk-line sk-line-l"></div>
-              <div class="skeleton sk-line sk-line-m"></div>
-              <div class="skeleton sk-line sk-line-s"></div>
-            </div>
-            <div class="skeleton-card">
-              <div class="skeleton sk-img"></div>
-              <div class="skeleton sk-line sk-line-l"></div>
-              <div class="skeleton sk-line sk-line-m"></div>
-              <div class="skeleton sk-line sk-line-s"></div>
-            </div>
-            <div class="skeleton-card">
-              <div class="skeleton sk-img"></div>
-              <div class="skeleton sk-line sk-line-l"></div>
-              <div class="skeleton sk-line sk-line-m"></div>
-              <div class="skeleton sk-line sk-line-s"></div>
-            </div>
-            <div class="skeleton-card">
-              <div class="skeleton sk-img"></div>
-              <div class="skeleton sk-line sk-line-l"></div>
-              <div class="skeleton sk-line sk-line-m"></div>
-              <div class="skeleton sk-line sk-line-s"></div>
-            </div>
-          </div>
-        </div>
-      </main>
+      <div class="table-chip">
+        <span class="table-chip-dot"></span>
+        <span id="tableLabel">Table —</span>
+      </div>
 
-      <div class="action-bar">
-        <button class="btn-waiter" id="btnWaiter">🔔 Call Waiter</button>
-        <button class="btn-bill" id="btnBill">🧾 Request Bill</button>
+      <div class="menu-search-wrap">
+        <span class="menu-search-icon">🔍</span>
+        <input class="menu-search" type="search" id="menuSearch"
+               placeholder="Search dishes…" autocomplete="off">
       </div>
     </div>
+  </header>
 
-    <div class="toast" id="toast"></div>
+  <nav class="cat-nav" aria-label="Menu categories">
+    <div class="cat-nav-inner" id="catNav">
+      <button class="cat-btn active" data-cat="all">🍴 All</button>
+    </div>
+  </nav>
 
-    <script src="../assets/js/script.js"></script>
-  </body>
+  <div class="dietary-nav" id="dietaryNav">
+    <div class="dietary-nav-inner">
+      <span class="dietary-label">Dietary:</span>
+      <button class="diet-btn" data-filter="vegan">🌱 Vegan</button>
+      <button class="diet-btn" data-filter="vegetarian">🥬 Vegetarian</button>
+      <button class="diet-btn" data-filter="halal">☪ Halal</button>
+      <button class="diet-btn" data-filter="gf">🌾 Gluten-Free</button>
+      <button class="diet-btn" data-filter="spicy">🌶 Spicy</button>
+    </div>
+  </div>
+
+  <main class="menu-body" id="menuBody">
+    <div class="menu-loading" id="menuLoading">
+      <div class="skeleton-grid">
+        <div class="skeleton-card"><div class="skeleton sk-img"></div><div class="skeleton sk-line sk-line-l"></div><div class="skeleton sk-line sk-line-m"></div><div class="skeleton sk-line sk-line-s"></div></div>
+        <div class="skeleton-card"><div class="skeleton sk-img"></div><div class="skeleton sk-line sk-line-l"></div><div class="skeleton sk-line sk-line-m"></div><div class="skeleton sk-line sk-line-s"></div></div>
+        <div class="skeleton-card"><div class="skeleton sk-img"></div><div class="skeleton sk-line sk-line-l"></div><div class="skeleton sk-line sk-line-m"></div><div class="skeleton sk-line sk-line-s"></div></div>
+        <div class="skeleton-card"><div class="skeleton sk-img"></div><div class="skeleton sk-line sk-line-l"></div><div class="skeleton sk-line sk-line-m"></div><div class="skeleton sk-line sk-line-s"></div></div>
+        <div class="skeleton-card"><div class="skeleton sk-img"></div><div class="skeleton sk-line sk-line-l"></div><div class="skeleton sk-line sk-line-m"></div><div class="skeleton sk-line sk-line-s"></div></div>
+        <div class="skeleton-card"><div class="skeleton sk-img"></div><div class="skeleton sk-line sk-line-l"></div><div class="skeleton sk-line sk-line-m"></div><div class="skeleton sk-line sk-line-s"></div></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Action bar -->
+  <div class="action-bar">
+    <button class="btn-cart" id="btnCart">
+      🛒 <span id="cartLabel">Order</span>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <button class="btn-waiter" id="btnWaiter">🔔 Call Waiter</button>
+    <button class="btn-bill"   id="btnBill">🧾 Request Bill</button>
+  </div>
+
+</div>
+
+<!-- Cart drawer -->
+<div class="cart-backdrop" id="cartBackdrop"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-drawer-handle"></div>
+  <div class="cart-head">
+    <span class="cart-title">Your Order</span>
+    <button class="cart-close" id="cartClose">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">No items yet.<br>Browse the menu and tap <strong>+</strong> to add dishes.</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span>Total</span>
+      <span class="cart-total-val" id="cartTotal">$0.00</span>
+    </div>
+    <textarea class="input" id="orderNotes" rows="2"
+              placeholder="Special requests? (allergies, cooking preferences…)"></textarea>
+    <button class="btn btn-primary btn-full btn-lg" id="btnSendOrder">
+      🍽 Send Order to Kitchen
+    </button>
+  </div>
+</div>
+
+<!-- Order confirmed overlay -->
+<div class="order-confirm" id="orderConfirm" style="display:none">
+  <div class="order-confirm-box">
+    <div class="order-confirm-icon">✅</div>
+    <div class="order-confirm-title">Order Sent!</div>
+    <div class="order-confirm-sub">Your order is on its way to the kitchen.<br>We'll bring it to your table shortly.</div>
+    <button class="btn btn-primary" id="orderConfirmClose">Continue Browsing</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="../assets/js/script.js"></script>
+</body>
 </html>
