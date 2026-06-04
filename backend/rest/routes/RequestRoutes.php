@@ -50,7 +50,7 @@ Flight::route('POST /requests/bill', function (): void {
 // PROTECTED: Get all waiter requests (Admin/Staff)
 // -------------------------------------------------------
 Flight::route('GET /requests/waiter', function (): void {
-    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::WAITER]);
     $status = Flight::request()->query->getData()['status'] ?? null;
     Flight::json(['success' => true, 'data' => (new RequestDao())->getWaiterRequests($status)]);
 });
@@ -59,7 +59,7 @@ Flight::route('GET /requests/waiter', function (): void {
 // PROTECTED: Get all bill requests (Admin/Staff)
 // -------------------------------------------------------
 Flight::route('GET /requests/bill', function (): void {
-    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::WAITER]);
     $status = Flight::request()->query->getData()['status'] ?? null;
     Flight::json(['success' => true, 'data' => (new RequestDao())->getBillRequests($status)]);
 });
@@ -68,7 +68,7 @@ Flight::route('GET /requests/bill', function (): void {
 // PROTECTED: Get all pending requests combined (dashboard)
 // -------------------------------------------------------
 Flight::route('GET /requests/pending', function (): void {
-    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::WAITER]);
     Flight::json(['success' => true, 'data' => (new RequestDao())->getAllPendingRequests()]);
 });
 
@@ -76,7 +76,7 @@ Flight::route('GET /requests/pending', function (): void {
 // PROTECTED: Resolve waiter request
 // -------------------------------------------------------
 Flight::route('PUT /requests/waiter/@id:[0-9]+/resolve', function (string $id): void {
-    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::WAITER]);
     (new RequestDao())->resolveWaiterRequest((int) $id);
     Flight::json(['success' => true]);
 });
@@ -85,7 +85,7 @@ Flight::route('PUT /requests/waiter/@id:[0-9]+/resolve', function (string $id): 
 // PROTECTED: Resolve bill request
 // -------------------------------------------------------
 Flight::route('PUT /requests/bill/@id:[0-9]+/resolve', function (string $id): void {
-    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::WAITER]);
     (new RequestDao())->resolveBillRequest((int) $id);
     Flight::json(['success' => true]);
 });

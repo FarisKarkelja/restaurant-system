@@ -45,25 +45,25 @@ Flight::route('POST /orders', function (): void {
 
 // PROTECTED: Today's order stats (for admin dashboard)
 Flight::route('GET /orders/stats', function (): void {
-    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::WAITER]);
     Flight::json(['success' => true, 'data' => (new OrderDao())->getTodayStats()]);
 });
 
 // PROTECTED: Active orders — pending / confirmed / preparing
 Flight::route('GET /orders/active', function (): void {
-    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::WAITER]);
     Flight::json(['success' => true, 'data' => (new OrderDao())->getActiveOrders()]);
 });
 
 // PROTECTED: All orders (recent 50)
 Flight::route('GET /orders', function (): void {
-    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::WAITER]);
     Flight::json(['success' => true, 'data' => (new OrderDao())->getAllOrders()]);
 });
 
 // PROTECTED: Update order status
 Flight::route('PUT /orders/@id:[0-9]+/status', function (string $id): void {
-    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::WAITER]);
     $body    = Flight::request()->data->getData();
     $status  = $body['status'] ?? '';
     $allowed = ['pending', 'confirmed', 'preparing', 'served', 'paid', 'cancelled'];

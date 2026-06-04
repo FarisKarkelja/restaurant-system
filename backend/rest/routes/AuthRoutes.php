@@ -155,7 +155,7 @@ Flight::route('PUT /auth/users/@id:[0-9]+/role', function ($id): void {
     $body = Flight::request()->data->getData();
     $role = $body['role'] ?? '';
 
-    if (!in_array($role, [Roles::ADMIN, Roles::USER], true)) {
+    if (!in_array($role, [Roles::ADMIN, Roles::WAITER, Roles::USER], true)) {
         Flight::json(['success' => false, 'error' => 'Invalid role'], 422);
         return;
     }
