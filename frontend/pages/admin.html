@@ -1,240 +1,247 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Serviqo — Admin Dashboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/style.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Serviqo — Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/css/style.css" />
+  </head>
+  <body>
+    <div class="admin-page">
+      <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<div class="admin-page">
-
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-  <aside class="sidebar" id="sidebar">
-
-    <div class="sidebar-brand">
-      <div class="sidebar-logo">🍽</div>
-      <div>
-        <div class="sidebar-name">SERVIQO</div>
-        <div class="sidebar-role">Admin Panel</div>
-      </div>
-    </div>
-
-    <nav class="sidebar-nav">
-      <div class="nav-section">
-        <span class="nav-section-label">Overview</span>
-        <a class="nav-item active" href="#dashboard">
-          <span class="nav-icon">📊</span> Dashboard
-        </a>
-      </div>
-      <div class="nav-section">
-        <span class="nav-section-label">Restaurant</span>
-        <a class="nav-item" href="#tables">
-          <span class="nav-icon">🪑</span> Tables
-        </a>
-        <a class="nav-item" href="#orders">
-          <span class="nav-icon">📋</span> Orders
-          <span class="nav-badge" id="ordersBadge"></span>
-        </a>
-        <a class="nav-item" href="#requests">
-          <span class="nav-icon">🔔</span> Requests
-          <span class="nav-badge" id="requestsBadge"></span>
-        </a>
-      </div>
-      <div class="nav-section">
-        <span class="nav-section-label">Catalogue</span>
-        <a class="nav-item" href="#menu">
-          <span class="nav-icon">🍽</span> Menu Items
-        </a>
-        <a class="nav-item" href="#categories">
-          <span class="nav-icon">🗂</span> Categories
-        </a>
-      </div>
-      <div class="nav-section">
-        <span class="nav-section-label">System</span>
-        <a class="nav-item" href="#users">
-          <span class="nav-icon">👥</span> Users
-        </a>
-      </div>
-    </nav>
-
-    <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <div class="sidebar-avatar">A</div>
-        <div>
-          <div class="sidebar-user-name">Admin</div>
-          <div class="sidebar-user-sub">admin@serviqo.com</div>
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+          <div class="sidebar-logo">🍽</div>
+          <div>
+            <div class="sidebar-name">SERVIQO</div>
+            <div class="sidebar-role">Admin Panel</div>
+          </div>
         </div>
-      </div>
-    </div>
 
-  </aside>
+        <nav class="sidebar-nav">
+          <div class="nav-section">
+            <span class="nav-section-label">Overview</span>
+            <a class="nav-item active" href="#dashboard">
+              <span class="nav-icon">📊</span> Dashboard
+            </a>
+          </div>
+          <div class="nav-section">
+            <span class="nav-section-label">Restaurant</span>
+            <a class="nav-item" href="#tables">
+              <span class="nav-icon">🪑</span> Tables
+            </a>
+            <a class="nav-item" href="#orders">
+              <span class="nav-icon">📋</span> Orders
+              <span class="nav-badge" id="ordersBadge"></span>
+            </a>
+            <a class="nav-item" href="#requests">
+              <span class="nav-icon">🔔</span> Requests
+              <span class="nav-badge" id="requestsBadge"></span>
+            </a>
+          </div>
+          <div class="nav-section">
+            <span class="nav-section-label">Catalogue</span>
+            <a class="nav-item" href="#menu">
+              <span class="nav-icon">🍽</span> Menu Items
+            </a>
+            <a class="nav-item" href="#categories">
+              <span class="nav-icon">🗂</span> Categories
+            </a>
+          </div>
+          <div class="nav-section">
+            <span class="nav-section-label">System</span>
+            <a class="nav-item" href="#users">
+              <span class="nav-icon">👥</span> Users
+            </a>
+          </div>
+        </nav>
 
-  <div class="admin-main">
+        <div class="sidebar-footer">
+          <div class="sidebar-user">
+            <div class="sidebar-avatar">A</div>
+            <div>
+              <div class="sidebar-user-name">Admin</div>
+              <div class="sidebar-user-sub">admin@serviqo.com</div>
+            </div>
+          </div>
+        </div>
+      </aside>
 
-    <header class="admin-topbar">
-      <div class="topbar-left">
-        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-          <span></span><span></span><span></span>
-        </button>
-        <h1 class="topbar-title">Dashboard</h1>
-      </div>
-      <div class="topbar-right">
-        <a href="menu.html?table=a3f8c2d1e4b7f09a6c5e2d8b1f4a7c0e3d6b9f2a5c8e1d4b7f0a3c6e9d2b5"
-           class="btn btn-outline btn-sm" target="_blank">
-          👁 Preview Menu
-        </a>
-        <a href="#" id="btnLogout" class="btn btn-ghost btn-sm">Sign out</a>
-      </div>
-    </header>
+      <div class="admin-main">
+        <header class="admin-topbar">
+          <div class="topbar-left">
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+              <span></span><span></span><span></span>
+            </button>
+            <h1 class="topbar-title">Dashboard</h1>
+          </div>
+          <div class="topbar-right">
+            <a
+              href="menu.html?table=a3f8c2d1e4b7f09a6c5e2d8b1f4a7c0e3d6b9f2a5c8e1d4b7f0a3c6e9d2b5"
+              class="btn btn-outline btn-sm"
+              target="_blank"
+            >
+              👁 Preview Menu
+            </a>
+            <a href="#" id="btnLogout" class="btn btn-ghost btn-sm">Sign out</a>
+          </div>
+        </header>
 
-    <main class="admin-content">
-
-      <!-- Stats -->
-      <div class="stats-grid">
-
+        <main class="admin-content">
+          <!-- Stats -->
+          <div class="stats-grid">
+            <!--
         <div class="stat-card stat-card-gold">
           <div class="stat-glow"></div>
           <div class="stat-icon">🪑</div>
           <div class="stat-value" id="statActiveTables">—</div>
           <div class="stat-label">Occupied Tables</div>
         </div>
-
-        <div class="stat-card stat-card-green">
-          <div class="stat-glow"></div>
-          <div class="stat-icon">📋</div>
-          <div class="stat-value" id="statTodayOrders">—</div>
-          <div class="stat-label">Today's Orders</div>
-        </div>
-
-        <div class="stat-card stat-card-red">
-          <div class="stat-glow"></div>
-          <div class="stat-icon">🔔</div>
-          <div class="stat-value" id="statPendingRequests">—</div>
-          <div class="stat-label">Pending Requests</div>
-        </div>
-
-        <div class="stat-card stat-card-blue">
-          <div class="stat-glow"></div>
-          <div class="stat-icon">💰</div>
-          <div class="stat-value" id="statRevenue">—</div>
-          <div class="stat-label">Today's Revenue</div>
-        </div>
-
-      </div>
-
-      <!-- Tables + Requests row -->
-      <div class="admin-grid">
-
-        <!-- Tables panel -->
-        <div class="panel">
-          <div class="panel-head">
-            <span class="panel-title">Tables</span>
-            <span class="badge badge-neutral">Live</span>
-          </div>
-          <div class="panel-body">
-
-            <div class="tables-grid" id="tablesGrid">
-              <div class="skeleton-card" style="height:80px"></div>
-              <div class="skeleton-card" style="height:80px"></div>
-              <div class="skeleton-card" style="height:80px"></div>
-              <div class="skeleton-card" style="height:80px"></div>
-              <div class="skeleton-card" style="height:80px"></div>
+-->
+            <div class="stat-card stat-card-green">
+              <div class="stat-glow"></div>
+              <div class="stat-icon">📋</div>
+              <div class="stat-value" id="statTodayOrders">—</div>
+              <div class="stat-label">Today's Orders</div>
             </div>
 
-            <div style="display:flex;gap:16px;margin-top:18px;font-size:.78rem;color:var(--text-2);">
-              <span style="display:flex;align-items:center;gap:6px;">
-                <span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;"></span> Available
-              </span>
-              <span style="display:flex;align-items:center;gap:6px;">
-                <span style="width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block;"></span> Occupied
-              </span>
-              <span style="display:flex;align-items:center;gap:6px;">
-                <span style="width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block;"></span> Reserved
-              </span>
+            <div class="stat-card stat-card-red">
+              <div class="stat-glow"></div>
+              <div class="stat-icon">🔔</div>
+              <div class="stat-value" id="statPendingRequests">—</div>
+              <div class="stat-label">Pending Requests</div>
+            </div>
+
+            <div class="stat-card stat-card-blue">
+              <div class="stat-glow"></div>
+              <div class="stat-icon">💰</div>
+              <div class="stat-value" id="statRevenue">—</div>
+              <div class="stat-label">Today's Revenue</div>
             </div>
           </div>
-        </div>
 
-        <!-- Requests panel -->
-        <div class="panel">
-          <div class="panel-head">
-            <span class="panel-title">Pending Requests</span>
-            <span class="badge badge-red" id="requestsBadgePanel">Live</span>
-          </div>
-          <div class="panel-body-sm">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Table</th>
-                  <th>Type</th>
-                  <th>Time</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody id="requestsTableBody">
-                <tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:20px;">Loading…</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+          <!-- Tables + Requests row -->
+          <div class="admin-grid">
+            <!-- Tables panel (TBA) -->
 
+            <!-- Requests panel -->
+            <div class="panel">
+              <div class="panel-head">
+                <span class="panel-title">Pending Requests</span>
+                <span class="badge badge-red" id="requestsBadgePanel"
+                  >Live</span
+                >
+              </div>
+              <div class="panel-body-sm">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Table</th>
+                      <th>Type</th>
+                      <th>Time</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="requestsTableBody">
+                    <tr>
+                      <td
+                        colspan="4"
+                        style="
+                          text-align: center;
+                          color: var(--text-3);
+                          padding: 20px;
+                        "
+                      >
+                        Loading…
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Orders panel — full width -->
+          <div class="panel" style="margin-top: 20px">
+            <div class="panel-head">
+              <div style="display: flex; align-items: center; gap: 10px">
+                <span class="panel-title">Active Orders</span>
+                <span class="badge badge-amber" id="activeOrdersBadge">0</span>
+              </div>
+              <span class="badge badge-neutral">Live · auto-refresh 4s</span>
+            </div>
+            <div class="panel-body-sm">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Table</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Time</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="ordersTableBody">
+                  <tr>
+                    <td
+                      colspan="6"
+                      style="
+                        text-align: center;
+                        color: var(--text-3);
+                        padding: 24px;
+                      "
+                    >
+                      Loading…
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
       </div>
+    </div>
 
-      <!-- Active Orders panel — full width -->
-      <div class="panel" style="margin-top:20px">
-        <div class="panel-head">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span class="panel-title">Active Orders</span>
-            <span class="badge badge-amber" id="activeOrdersBadge">0</span>
-          </div>
-          <span class="badge badge-neutral">Live · auto-refresh 4s</span>
+    <!-- QR Code Modal -->
+    <div class="modal-backdrop" id="qrModal" style="display: none">
+      <div class="modal">
+        <div class="modal-head">
+          <span class="modal-title" id="qrModalTitle">Table QR Code</span>
+          <button class="modal-close" id="qrModalClose">✕</button>
         </div>
-        <div class="panel-body-sm">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Table</th>
-                <th>Items</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th>Time</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="ordersTableBody">
-              <tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:24px;">Loading…</td></tr>
-            </tbody>
-          </table>
+        <div class="modal-body" style="text-align: center; padding: 28px 24px">
+          <img
+            id="qrImage"
+            src=""
+            alt="QR Code"
+            style="width: 200px; height: 200px; border-radius: 8px"
+          />
+          <p
+            style="
+              margin-top: 16px;
+              font-size: 0.78rem;
+              color: var(--text-3);
+              word-break: break-all;
+            "
+            id="qrUrl"
+          ></p>
+          <p style="margin-top: 8px; font-size: 0.72rem; color: var(--text-3)">
+            Scan with phone camera to open the menu
+          </p>
         </div>
       </div>
-
-    </main>
-  </div>
-</div>
-
-<!-- QR Code Modal -->
-<div class="modal-backdrop" id="qrModal" style="display:none">
-  <div class="modal">
-    <div class="modal-head">
-      <span class="modal-title" id="qrModalTitle">Table QR Code</span>
-      <button class="modal-close" id="qrModalClose">✕</button>
     </div>
-    <div class="modal-body" style="text-align:center;padding:28px 24px;">
-      <img id="qrImage" src="" alt="QR Code" style="width:200px;height:200px;border-radius:8px;">
-      <p style="margin-top:16px;font-size:.78rem;color:var(--text-3);word-break:break-all;" id="qrUrl"></p>
-      <p style="margin-top:8px;font-size:.72rem;color:var(--text-3);">Scan with phone camera to open the menu</p>
-    </div>
-  </div>
-</div>
 
-<div class="toast" id="toast"></div>
+    <div class="toast" id="toast"></div>
 
-<script src="../assets/js/script.js"></script>
-</body>
+    <script src="../assets/js/script.js"></script>
+  </body>
 </html>

@@ -16,17 +16,3 @@ Flight::route('GET /tables/token/@token', function (string $token): void {
     Flight::json(['success' => true, 'data' => $table]);
 });
 
-// PROTECTED: Update table status (Admin only)
-Flight::route('PUT /tables/@id:[0-9]+/status', function (string $id): void {
-    Flight::authMiddleware()->authorizeRole(Roles::ADMIN);
-    $body   = Flight::request()->data->getData();
-    $status = $body['status'] ?? '';
-
-    if (!in_array($status, ['available', 'occupied', 'reserved'], true)) {
-        Flight::json(['success' => false, 'error' => 'Invalid status value'], 422);
-        return;
-    }
-
-    (new TableDao())->updateStatus((int) $id, $status);
-    Flight::json(['success' => true]);
-});
