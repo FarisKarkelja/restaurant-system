@@ -13,6 +13,7 @@ require_once __DIR__ . '/rest/dao/AuthDao.php';
 require_once __DIR__ . '/rest/dao/RequestDao.php';
 require_once __DIR__ . '/rest/dao/TableDao.php';
 require_once __DIR__ . '/rest/dao/OrderDao.php';
+require_once __DIR__ . '/rest/dao/TableAssignmentDao.php';
 
 // Routes
 require_once __DIR__ . '/rest/routes/MenuRoutes.php';
@@ -20,6 +21,7 @@ require_once __DIR__ . '/rest/routes/AuthRoutes.php';
 require_once __DIR__ . '/rest/routes/RequestRoutes.php';
 require_once __DIR__ . '/rest/routes/TableRoutes.php';
 require_once __DIR__ . '/rest/routes/OrderRoutes.php';
+require_once __DIR__ . '/rest/routes/TableAssignmentRoutes.php';
 
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');

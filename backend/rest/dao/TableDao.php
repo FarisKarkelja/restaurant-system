@@ -36,4 +36,5 @@ class TableDao
         $row = $stmt->fetch();
         return $row ?: null;
     }
+
 }

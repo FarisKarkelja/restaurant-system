@@ -33,11 +33,6 @@ class OrderDao
             ]);
         }
 
-        // Mark table occupied when an order is placed
-        $this->db->prepare(
-            "UPDATE tables SET status = 'occupied' WHERE id = :id"
-        )->execute(['id' => $tableId]);
-
         return $this->getOrderById($orderId);
     }
 

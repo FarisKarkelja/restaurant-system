@@ -2,7 +2,7 @@
 
 // PROTECTED: Get all tables with status
 Flight::route('GET /tables', function (): void {
-    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::USER]);
+    Flight::authMiddleware()->authorizeRoles([Roles::ADMIN, Roles::WAITER]);
     Flight::json(['success' => true, 'data' => (new TableDao())->getAllTables()]);
 });
 

@@ -2,6 +2,7 @@
 
 class Roles
 {
-    const ADMIN = 'Admin';
-    const USER  = 'User';
+    const ADMIN   = 'Admin';
+    const WAITER  = 'Waiter';
+    const USER    = 'User';
 }
