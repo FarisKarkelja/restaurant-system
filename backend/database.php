@@ -8,9 +8,7 @@ class Database {
         if (self::$connection === null) {
             try {
                 self::$connection = new PDO(
-                    "mysql:host=" . Config::DB_HOST() .
-                    ";port=" . Config::DB_PORT() . 
-                    ";dbname=" . Config::DB_NAME(),
+                    "mysql:host=" . Config::DB_HOST() . ";port=" . Config::DB_PORT() . ";dbname=" . Config::DB_NAME() . ";charset=utf8mb4",
                     Config::DB_USER(),
                     Config::DB_PASSWORD(),
                     [
