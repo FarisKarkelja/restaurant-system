@@ -37,4 +37,11 @@ class TableDao
         return $row ?: null;
     }
 
+    public function updateStatus(int $id, string $status): void
+    {
+        $this->db->prepare(
+            'UPDATE tables SET status = :status WHERE id = :id'
+        )->execute(['status' => $status, 'id' => $id]);
+    }
+
 }

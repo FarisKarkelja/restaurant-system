@@ -149,6 +149,18 @@ Flight::route('GET /auth/users', function (): void {
     Flight::json(['success' => true, 'data' => (new AuthDao())->getAllUsers()]);
 });
 
+// Admin: delete a user
+Flight::route('DELETE /auth/users/@id:[0-9]+', function ($id): void {
+    Flight::authMiddleware()->authorizeRole(Roles::ADMIN);
+    $me = Flight::get('user');
+    if ((int) $id === (int) $me->id) {
+        Flight::json(['success' => false, 'error' => 'Cannot delete your own account'], 400);
+        return;
+    }
+    (new AuthDao())->deleteAccount((int) $id);
+    Flight::json(['success' => true]);
+});
+
 // Admin: update user role
 Flight::route('PUT /auth/users/@id:[0-9]+/role', function ($id): void {
     Flight::authMiddleware()->authorizeRole(Roles::ADMIN);

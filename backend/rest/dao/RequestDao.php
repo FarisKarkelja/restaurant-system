@@ -9,9 +9,7 @@ class RequestDao
         $this->db = Database::connect();
     }
 
-    // -------------------------------------------------------
     // Table helpers
-    // -------------------------------------------------------
 
     public function getTableByToken(string $token): ?array
     {
@@ -23,9 +21,7 @@ class RequestDao
         return $row ?: null;
     }
 
-    // -------------------------------------------------------
     // Waiter requests
-    // -------------------------------------------------------
 
     public function createWaiterRequest(int $tableId): array
     {
@@ -85,9 +81,7 @@ class RequestDao
         )->execute(['id' => $id]);
     }
 
-    // -------------------------------------------------------
     // Bill requests
-    // -------------------------------------------------------
 
     public function createBillRequest(int $tableId): array
     {
@@ -146,9 +140,7 @@ class RequestDao
         )->execute(['id' => $id]);
     }
 
-    // -------------------------------------------------------
     // Combined pending requests (for dashboard)
-    // -------------------------------------------------------
 
     public function getAllPendingRequests(): array
     {
