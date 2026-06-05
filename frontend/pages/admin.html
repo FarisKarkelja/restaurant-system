@@ -46,6 +46,9 @@
         <a class="nav-item" data-section="users" href="#users">
           <span class="nav-icon">👥</span> Users
         </a>
+        <a class="nav-item" data-section="analytics" href="#analytics">
+          <span class="nav-icon">📈</span> Analytics
+        </a>
       </div>
     </nav>
 
@@ -89,6 +92,13 @@
         <!-- Stats -->
         <div class="stats-grid">
 
+          <div class="stat-card stat-card-gold">
+            <div class="stat-glow"></div>
+            <div class="stat-icon">🪑</div>
+            <div class="stat-value" id="statActiveTables">—</div>
+            <div class="stat-label">Occupied Tables</div>
+          </div>
+
           <div class="stat-card stat-card-green">
             <div class="stat-glow"></div>
             <div class="stat-icon">📋</div>
@@ -129,6 +139,18 @@
                 <div class="skeleton-card" style="height:80px"></div>
                 <div class="skeleton-card" style="height:80px"></div>
                 <div class="skeleton-card" style="height:80px"></div>
+              </div>
+
+              <div style="display:flex;gap:16px;margin-top:18px;font-size:.78rem;color:var(--text-2);">
+                <span style="display:flex;align-items:center;gap:6px;">
+                  <span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;"></span> Available
+                </span>
+                <span style="display:flex;align-items:center;gap:6px;">
+                  <span style="width:8px;height:8px;border-radius:50%;background:var(--gold);display:inline-block;"></span> Occupied
+                </span>
+                <span style="display:flex;align-items:center;gap:6px;">
+                  <span style="width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block;"></span> Reserved
+                </span>
               </div>
 
             </div>
@@ -271,7 +293,133 @@
         </div>
       </div><!-- /section-menu -->
 
+      <!-- ============================================================
+           USERS SECTION
+      ============================================================ -->
+      <div id="section-users" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+          <h2 style="font-size:1.15rem;font-weight:600;color:var(--text-1);">Users</h2>
+        </div>
+        <div class="panel">
+          <div class="panel-body-sm">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Joined</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px;">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div><!-- /section-users -->
+
+      <!-- ============================================================
+           ANALYTICS SECTION
+      ============================================================ -->
+      <div id="section-analytics" style="display:none">
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+          <h2 style="font-size:1.15rem;font-weight:600;color:var(--text-1);">Restaurant Analytics</h2>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <label style="font-size:.8rem;color:var(--text-2);">Period:</label>
+            <select class="input" id="analyticsPeriod" style="width:140px;height:32px;padding:4px 8px;font-size:.8rem;"
+                    onchange="refreshAnalytics()">
+              <option value="7">Last 7 days</option>
+              <option value="30" selected>Last 30 days</option>
+              <option value="90">Last 90 days</option>
+            </select>
+            <button class="btn btn-neutral btn-sm" onclick="refreshAnalytics()">Refresh</button>
+          </div>
+        </div>
+
+        <!-- Summary stat cards -->
+        <div class="stats-grid" id="analyticsStatsGrid">
+          <div class="stat-card stat-card-gold">
+            <div class="stat-glow"></div>
+            <div class="stat-icon">💰</div>
+            <div class="stat-value" id="aStatRevenue">—</div>
+            <div class="stat-label">Total Revenue</div>
+          </div>
+          <div class="stat-card stat-card-blue">
+            <div class="stat-glow"></div>
+            <div class="stat-icon">📋</div>
+            <div class="stat-value" id="aStatOrders">—</div>
+            <div class="stat-label">Total Orders</div>
+          </div>
+          <div class="stat-card stat-card-green">
+            <div class="stat-glow"></div>
+            <div class="stat-icon">🧾</div>
+            <div class="stat-value" id="aStatAvg">—</div>
+            <div class="stat-label">Avg Order Value</div>
+          </div>
+          <div class="stat-card stat-card-red">
+            <div class="stat-glow"></div>
+            <div class="stat-icon">⏰</div>
+            <div class="stat-value" id="aStatPeak">—</div>
+            <div class="stat-label">Peak Hour</div>
+          </div>
+        </div>
+
+        <!-- Charts row -->
+        <div class="analytics-charts-grid">
+          <div class="panel analytics-chart-panel">
+            <div class="panel-head">
+              <span class="panel-title">Revenue Trend</span>
+              <span class="badge badge-neutral" id="revTrendLabel">Last 7 days</span>
+            </div>
+            <div class="panel-body" style="padding:16px;">
+              <canvas id="chartRevenue" height="110"></canvas>
+            </div>
+          </div>
+          <div class="panel analytics-chart-panel">
+            <div class="panel-head">
+              <span class="panel-title">Peak Hours</span>
+              <span class="badge badge-neutral">Orders by hour</span>
+            </div>
+            <div class="panel-body" style="padding:16px;">
+              <canvas id="chartPeakHours" height="110"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Popular items -->
+        <div class="panel" style="margin-top:20px;">
+          <div class="panel-head">
+            <span class="panel-title">Most Popular Items</span>
+            <span class="badge badge-amber">Top 5</span>
+          </div>
+          <div class="panel-body-sm" id="popularItemsList">
+            <div style="text-align:center;color:var(--text-3);padding:24px;">Loading…</div>
+          </div>
+        </div>
+
+      </div><!-- /section-analytics -->
+
     </main>
+  </div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div class="modal-backdrop" id="confirmModal" style="display:none">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-head">
+      <span class="modal-title">Delete User</span>
+      <button class="modal-close" id="confirmModalClose">✕</button>
+    </div>
+    <div class="modal-body" style="padding:24px;">
+      <p id="confirmModalMessage" style="color:var(--text-2);font-size:.92rem;line-height:1.6;margin-bottom:24px;"></p>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button class="btn btn-ghost btn-sm" id="confirmModalCancel">Cancel</button>
+        <button class="btn btn-sm" id="confirmModalOk" style="background:var(--red);color:#fff;border-color:var(--red);">Delete</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -352,16 +500,16 @@
         <label class="label">Dietary Flags</label>
         <div style="display:flex;flex-wrap:wrap;gap:14px;margin-top:8px;">
           <label style="display:flex;align-items:center;gap:6px;font-size:.85rem;cursor:pointer;">
-            <input type="checkbox" id="itemVegan"> 🌱 Vegan
+            <input type="checkbox" id="itemVegan"> Vegan
           </label>
           <label style="display:flex;align-items:center;gap:6px;font-size:.85rem;cursor:pointer;">
-            <input type="checkbox" id="itemVeg"> 🥬 Vegetarian
+            <input type="checkbox" id="itemVeg"> Vegetarian
           </label>
           <label style="display:flex;align-items:center;gap:6px;font-size:.85rem;cursor:pointer;">
-            <input type="checkbox" id="itemHalal"> ☪ Halal
+            <input type="checkbox" id="itemHalal"> Halal
           </label>
           <label style="display:flex;align-items:center;gap:6px;font-size:.85rem;cursor:pointer;">
-            <input type="checkbox" id="itemGf"> 🌾 Gluten-Free
+            <input type="checkbox" id="itemGf"> Gluten-Free
           </label>
           <label style="display:flex;align-items:center;gap:6px;font-size:.85rem;cursor:pointer;">
             <input type="checkbox" id="itemSpicy"> 🌶 Spicy
@@ -380,6 +528,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="../assets/js/script.js"></script>
 </body>
 </html>

@@ -1,9 +1,34 @@
 /* ============================================================
    Serviqo — Frontend Application Script
-   Covers: Auth, Menu + Cart, Requests, Admin Panel + Orders
+   Covers: Auth, Menu + Cart, Requests, Admin Panel + Orders,
+           Analytics (Serviqo 2.1)
    ============================================================ */
 
 const API_BASE = 'http://localhost:8000';
+
+// ================================================================
+// DESIGN PATTERN: Observer (Event Bus)
+//
+// AnalyticsEventBus is the Subject.  Any module can publish events;
+// any other module can subscribe without either knowing about the
+// other.  Used here so the Analytics dashboard refreshes
+// automatically whenever new order data arrives from the 4-second
+// poll — without coupling the polling code to analytics at all.
+// ================================================================
+const AnalyticsEventBus = (() => {
+  const _listeners = {};
+  return {
+    subscribe(event, cb) {
+      (_listeners[event] ??= []).push(cb);
+    },
+    unsubscribe(event, cb) {
+      if (_listeners[event]) _listeners[event] = _listeners[event].filter(f => f !== cb);
+    },
+    publish(event, data = null) {
+      (_listeners[event] ?? []).forEach(cb => cb(data));
+    },
+  };
+})();
 
 // ---- Tiny DOM helpers ----
 function  $(sel, ctx = document) { return ctx.querySelector(sel); }
@@ -193,38 +218,51 @@ function initRegisterForm() {
 }
 
 // ================================================================
+// ================================================================
+// MENU PAGE — Trending items (Observer: menu subscribes to this set)
+// ================================================================
+let trendingItemIds = new Set();
+
+async function loadTrendingItems() {
+  try {
+    const res = await fetch(`${API_BASE}/menu/trending`);
+    if (!res.ok) return;
+    const { data } = await res.json();
+    trendingItemIds = new Set(data.map(id => +id));
+  } catch { }
+}
+
 // MENU PAGE — rendering helpers
 // ================================================================
-const CAT_EMOJI = { 1: '🥗', 2: '🍽', 3: '🍰', 4: '🥤' };
 
 function dietBadgesHtml(item) {
   const b = [];
-  if (item.is_vegan)       b.push('<span class="diet-badge diet-badge-vegan">🌱 Vegan</span>');
-  if (item.is_vegetarian)  b.push('<span class="diet-badge diet-badge-vegetarian">🥬 Vegetarian</span>');
-  if (item.is_halal)       b.push('<span class="diet-badge diet-badge-halal">☪ Halal</span>');
-  if (item.is_gluten_free) b.push('<span class="diet-badge diet-badge-gf">🌾 Gluten-Free</span>');
-  if (item.is_spicy)       b.push('<span class="diet-badge diet-badge-spicy">🌶 Spicy</span>');
+  if (item.is_vegan)       b.push('<span class="diet-badge diet-badge-vegan">Vegan</span>');
+  if (item.is_vegetarian)  b.push('<span class="diet-badge diet-badge-vegetarian">Vegetarian</span>');
+  if (item.is_halal)       b.push('<span class="diet-badge diet-badge-halal">Halal</span>');
+  if (item.is_gluten_free) b.push('<span class="diet-badge diet-badge-gf">Gluten-Free</span>');
+  if (item.is_spicy)       b.push('<span class="diet-badge diet-badge-spicy">Spicy</span>');
   return b.join('');
 }
 
 function cardImageHtml(item) {
-  const emoji = CAT_EMOJI[item.category_id] ?? '🍽';
-  if (!item.image_url) return `<div class="card-emoji">${emoji}</div>`;
-  return `<img src="${item.image_url}" alt="${item.name}" loading="lazy" data-emoji="${emoji}">`;
+  if (!item.image_url) return `<div class="card-emoji">🍽</div>`;
+  return `<img src="${item.image_url}" alt="${item.name}" loading="lazy">`;
 }
 
 function wireImageFallbacks() {
   $$('.menu-card-img img').forEach(img => {
     img.addEventListener('error', () => {
-      img.parentElement.innerHTML = `<div class="card-emoji">${img.dataset.emoji}</div>`;
+      img.parentElement.innerHTML = `<div class="card-emoji">🍽</div>`;
     });
   });
 }
 
 function renderCardHtml(item) {
-  const badges = dietBadgesHtml(item);
-  const price  = parseFloat(item.price).toFixed(2);
-  const safeName = item.name.replace(/"/g, '&quot;');
+  const badges    = dietBadgesHtml(item);
+  const price     = parseFloat(item.price).toFixed(2);
+  const safeName  = item.name.replace(/"/g, '&quot;');
+  const trending  = trendingItemIds.has(+item.id);
   return `
     <article class="menu-card"
       data-cat="${item.category_id}"
@@ -235,7 +273,10 @@ function renderCardHtml(item) {
       data-halal="${item.is_halal || 0}"
       data-gf="${item.is_gluten_free || 0}"
       data-spicy="${item.is_spicy || 0}">
-      <div class="menu-card-img">${cardImageHtml(item)}</div>
+      <div class="menu-card-img">
+        ${trending ? '<span class="trending-badge">🔥 Popular</span>' : ''}
+        ${cardImageHtml(item)}
+      </div>
       <div class="menu-card-badges">${badges}</div>
       <div class="menu-card-body">
         <p class="menu-card-name">${item.name}</p>
@@ -508,6 +549,9 @@ async function initMenuPage() {
   const token      = new URLSearchParams(location.search).get('table') ?? '';
   const tableLabel = $('#tableLabel');
 
+  // Load trending IDs before rendering so badges appear on first paint
+  await loadTrendingItems();
+
   try {
     const fetches = [
       fetch(`${API_BASE}/menu/categories`),
@@ -534,9 +578,9 @@ async function initMenuPage() {
     const catNav = $('#catNav');
     if (catNav) {
       catNav.innerHTML =
-        `<button class="cat-btn active" data-cat="all">🍴 All</button>` +
+        `<button class="cat-btn active" data-cat="all">All</button>` +
         categories.map(c =>
-          `<button class="cat-btn" data-cat="${c.id}">${CAT_EMOJI[c.id] ?? '🍽'} ${c.name}</button>`
+          `<button class="cat-btn" data-cat="${c.id}">${c.name}</button>`
         ).join('');
 
       $$('.cat-btn', catNav).forEach(btn => {
@@ -693,6 +737,8 @@ function initAdminPage() {
         if (target) target.style.display = '';
         if (section === 'categories') loadCategoriesSection();
         if (section === 'menu')       loadMenuSection();
+        if (section === 'users')      loadUsersSection();
+        if (section === 'analytics')  loadAnalyticsDashboard();
       }
       if (window.innerWidth < 900) close();
     });
@@ -719,6 +765,7 @@ async function loadAdminDashboard() {
     loadAdminRequests(),
     loadAdminOrders(),
     loadAdminStats(),
+    loadAdminAssignments(),
   ]);
 }
 
@@ -736,10 +783,20 @@ function renderAdminTables(tables) {
   const grid = $('#tablesGrid');
   if (!grid) return;
 
+  const occupied = tables.filter(t => t.status === 'occupied').length;
+  const statActive = $('#statActiveTables');
+  if (statActive) statActive.textContent = occupied;
+
   grid.innerHTML = tables.map(t => `
-    <div class="table-tile" data-id="${t.id}">
+    <div class="table-tile ${t.status}" data-id="${t.id}">
       <div class="tile-num">${t.table_number}</div>
       <div class="tile-cap">${t.capacity} seats</div>
+      <div class="tile-dot"></div>
+      <select class="tile-status-select" data-table-id="${t.id}" title="Change status">
+        <option value="available"${t.status === 'available' ? ' selected' : ''}>Available</option>
+        <option value="occupied"${t.status === 'occupied'  ? ' selected' : ''}>Occupied</option>
+        <option value="reserved"${t.status === 'reserved'  ? ' selected' : ''}>Reserved</option>
+      </select>
       <button class="tile-qr-btn" data-token="${t.qr_token}" data-num="${t.table_number}">QR</button>
     </div>`).join('');
 
@@ -747,6 +804,27 @@ function renderAdminTables(tables) {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       showQrModal(btn.dataset.token, btn.dataset.num);
+    });
+  });
+
+  $$('.tile-status-select', grid).forEach(sel => {
+    sel.addEventListener('change', async function () {
+      const id     = this.dataset.tableId;
+      const status = this.value;
+      try {
+        const res = await fetch(`${API_BASE}/tables/${id}/status`, {
+          method:  'PUT',
+          headers: authHeaders(),
+          body:    JSON.stringify({ status }),
+        });
+        if (res.ok) {
+          const tile = this.closest('.table-tile');
+          tile.className = `table-tile ${status}`;
+          showToast(`Table ${id} → ${status}`, 'success');
+          loadAdminTables();
+          loadAdminAssignments();
+        }
+      } catch { showToast('Failed to update table', 'error'); }
     });
   });
 
@@ -851,6 +929,8 @@ async function loadAdminOrders() {
     if (!res.ok) return;
     const { data } = await res.json();
     renderAdminOrders(data);
+    // Observer: notify any subscriber that order data has changed
+    AnalyticsEventBus.publish('ordersUpdated', data);
   } catch { }
 }
 
@@ -931,6 +1011,7 @@ async function updateOrderStatus(orderId, status, btn) {
       const msg = status === 'served' ? 'Order marked as delivered!' : `Order → ${status}`;
       showToast(msg, 'success');
       loadAdminOrders();
+      loadAdminTables();
       loadAdminStats();
     } else {
       btn.disabled    = false;
@@ -1077,9 +1158,9 @@ async function loadMenuSection() {
   } catch {}
 }
 
-const DIET_ICONS = {
-  is_vegan: '🌱', is_vegetarian: '🥬', is_halal: '☪',
-  is_gluten_free: '🌾', is_spicy: '🌶',
+const DIET_LABELS = {
+  is_vegan: 'Vegan', is_vegetarian: 'Vegetarian', is_halal: 'Halal',
+  is_gluten_free: 'Gluten-Free', is_spicy: 'Spicy',
 };
 
 function renderMenuItems(items) {
@@ -1090,7 +1171,7 @@ function renderMenuItems(items) {
     return;
   }
   tbody.innerHTML = items.map(item => {
-    const diet  = Object.entries(DIET_ICONS).filter(([k]) => +item[k]).map(([, v]) => v).join(' ');
+    const diet  = Object.entries(DIET_LABELS).filter(([k]) => +item[k]).map(([, v]) => `<span class="badge badge-neutral" style="font-size:.7rem;">${v}</span>`).join(' ');
     const avail = +item.is_available
       ? '<span class="badge badge-green">Yes</span>'
       : '<span class="badge badge-neutral">No</span>';
@@ -1099,7 +1180,7 @@ function renderMenuItems(items) {
         <td><strong>${item.name}</strong></td>
         <td style="color:var(--text-2);font-size:.85rem;">${item.category_name}</td>
         <td><strong>$${parseFloat(item.price).toFixed(2)}</strong></td>
-        <td style="font-size:1rem;letter-spacing:2px;">${diet || '—'}</td>
+        <td style="font-size:.8rem;">${diet || '—'}</td>
         <td>${avail}</td>
         <td style="display:flex;gap:6px;">
           <button class="btn btn-neutral btn-sm" onclick="openMenuItemModal(${item.id})">Edit</button>
@@ -1340,6 +1421,373 @@ async function removeAssignment(tableId, btn) {
     btn.textContent = '✕';
   }
 }
+
+// ================================================================
+// USERS SECTION
+// ================================================================
+async function loadUsersSection() {
+  try {
+    const res = await fetch(`${API_BASE}/auth/users`, { headers: authHeaders() });
+    if (!res.ok) return;
+    const { data } = await res.json();
+    renderUsers(data);
+  } catch {}
+}
+
+function renderUsers(users) {
+  const tbody = $('#usersTableBody');
+  if (!tbody) return;
+
+  const me = getUser();
+
+  if (users.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--text-3);padding:24px;">No users found</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = users.map(u => {
+    const roleSelect = `
+      <select class="input" style="padding:4px 8px;height:32px;font-size:.8rem;width:120px;" id="roleSel-${u.id}">
+        <option value="User"${u.role === 'User' ? ' selected' : ''}>User</option>
+        <option value="Waiter"${u.role === 'Waiter' ? ' selected' : ''}>Waiter</option>
+        <option value="Admin"${u.role === 'Admin' ? ' selected' : ''}>Admin</option>
+      </select>`;
+
+    const isSelf = u.id === me?.id;
+    const actions = isSelf
+      ? `<span style="color:var(--text-3);font-size:.8rem;">You</span>`
+      : `<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+           ${roleSelect}
+           <button class="btn btn-neutral btn-sm" onclick="saveUserRole(${u.id}, this)">Save</button>
+           <button class="btn btn-ghost btn-sm" onclick="deleteUser(${u.id}, this)">Delete</button>
+         </div>`;
+
+    const joined = new Date(u.created_at).toLocaleDateString();
+    const roleBadge = u.role === 'Admin'  ? 'badge-blue'
+                    : u.role === 'Waiter' ? 'badge-amber'
+                    : 'badge-neutral';
+
+    return `
+      <tr id="user-row-${u.id}">
+        <td><strong>${u.name}</strong></td>
+        <td style="color:var(--text-2);font-size:.85rem;">${u.email}</td>
+        <td><span class="badge ${roleBadge}">${u.role}</span></td>
+        <td style="color:var(--text-3);font-size:.8rem;">${joined}</td>
+        <td>${actions}</td>
+      </tr>`;
+  }).join('');
+}
+
+async function saveUserRole(userId, btn) {
+  const sel  = $(`#roleSel-${userId}`);
+  const role = sel?.value;
+  if (!role) return;
+  btn.disabled    = true;
+  btn.textContent = '…';
+  try {
+    const res = await fetch(`${API_BASE}/auth/users/${userId}/role`, {
+      method:  'PUT',
+      headers: authHeaders(),
+      body:    JSON.stringify({ role }),
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast('Role updated', 'success');
+      loadUsersSection();
+      loadWaiters();
+    } else {
+      showToast(data.error || 'Failed to update role', 'error');
+    }
+  } catch {
+    showToast('Server error', 'error');
+  } finally {
+    btn.disabled    = false;
+    btn.textContent = 'Save';
+  }
+}
+
+function showConfirmModal(message) {
+  return new Promise(resolve => {
+    const modal   = $('#confirmModal');
+    const msgEl   = $('#confirmModalMessage');
+    const okBtn   = $('#confirmModalOk');
+    const cancel  = $('#confirmModalCancel');
+    const closeX  = $('#confirmModalClose');
+
+    msgEl.textContent = message;
+    modal.style.display = 'flex';
+
+    function finish(result) {
+      modal.style.display = 'none';
+      okBtn.removeEventListener('click', onOk);
+      cancel.removeEventListener('click', onCancel);
+      closeX.removeEventListener('click', onCancel);
+      resolve(result);
+    }
+    function onOk()     { finish(true);  }
+    function onCancel() { finish(false); }
+
+    okBtn.addEventListener('click',  onOk);
+    cancel.addEventListener('click', onCancel);
+    closeX.addEventListener('click', onCancel);
+  });
+}
+
+async function deleteUser(userId, btn) {
+  const confirmed = await showConfirmModal('Are you sure you want to delete this user? This action cannot be undone.');
+  if (!confirmed) return;
+  btn.disabled    = true;
+  btn.textContent = '…';
+  try {
+    const res = await fetch(`${API_BASE}/auth/users/${userId}`, {
+      method:  'DELETE',
+      headers: authHeaders(),
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      const row = $(`#user-row-${userId}`);
+      if (row) { row.style.opacity = '.3'; setTimeout(() => row.remove(), 400); }
+      showToast('User deleted', 'success');
+      loadWaiters();
+    } else {
+      showToast(data.error || 'Failed to delete user', 'error');
+      btn.disabled    = false;
+      btn.textContent = 'Delete';
+    }
+  } catch {
+    showToast('Server error', 'error');
+    btn.disabled    = false;
+    btn.textContent = 'Delete';
+  }
+}
+
+// ================================================================
+// ANALYTICS DASHBOARD (Serviqo 2.1)
+//
+// Design Pattern — Strategy (backend): each metric is a separate
+//   PHP strategy class; the frontend simply fetches /analytics/summary.
+//
+// Design Pattern — Observer (frontend): AnalyticsEventBus.subscribe
+//   wires this dashboard to the existing order-polling loop so the
+//   charts auto-refresh when new orders arrive, with zero coupling
+//   between the two features.
+// ================================================================
+
+let _chartRevenue      = null;
+let _chartPeakHours    = null;
+let _analyticsOpen     = false;
+let _analyticsLastFetch = null;          // timestamp of last successful fetch
+const ANALYTICS_TTL_MS  = 24 * 60 * 60 * 1000; // 24 hours
+
+// Observer: refresh analytics only if data is older than 24 hours.
+// This prevents charts from jumping on every 4-second order poll.
+AnalyticsEventBus.subscribe('ordersUpdated', () => {
+  if (!_analyticsOpen) return;
+  const stale = !_analyticsLastFetch || (Date.now() - _analyticsLastFetch) >= ANALYTICS_TTL_MS;
+  if (stale) loadAnalyticsDashboard();
+});
+
+function refreshAnalytics() {
+  _analyticsLastFetch = null; // force re-fetch regardless of TTL
+  loadAnalyticsDashboard();
+}
+
+async function loadAnalyticsDashboard() {
+  _analyticsOpen = true;
+  const days = parseInt($('#analyticsPeriod')?.value ?? '30', 10);
+
+  const popularEl = $('#popularItemsList');
+
+  try {
+    const res = await fetch(`${API_BASE}/analytics/summary`, { headers: authHeaders() });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      if (popularEl) popularEl.innerHTML = `<div style="text-align:center;color:var(--red);padding:24px;">
+        Failed to load analytics (${res.status}): ${err.error ?? 'Server error'}
+      </div>`;
+      return;
+    }
+
+    const { data } = await res.json();
+    _analyticsLastFetch = Date.now();
+    renderAnalyticsSummary(data, days);
+    renderRevenueChart(data.revenue_trend);
+    renderPeakHoursChart(data.peak_hours);
+    renderPopularItems(data.popular_items);
+  } catch (e) {
+    if (popularEl) popularEl.innerHTML = `<div style="text-align:center;color:var(--red);padding:24px;">
+      Cannot reach server. Make sure the backend is running.
+    </div>`;
+    showToast('Failed to load analytics', 'error');
+  }
+}
+
+function renderAnalyticsSummary(data, days) {
+  const ov = data.order_value;
+  const ph = data.peak_hours;
+
+  const revEl   = $('#aStatRevenue');
+  const ordEl   = $('#aStatOrders');
+  const avgEl   = $('#aStatAvg');
+  const peakEl  = $('#aStatPeak');
+  const lblEl   = $('#revTrendLabel');
+
+  if (revEl)  revEl.textContent  = '$' + ov.total_revenue.toFixed(2);
+  if (ordEl)  ordEl.textContent  = ov.total_orders;
+  if (avgEl)  avgEl.textContent  = '$' + ov.avg_value.toFixed(2);
+  if (peakEl) peakEl.textContent = ph.peak_label;
+  if (lblEl)  lblEl.textContent  = `Last ${days} days`;
+}
+
+function renderRevenueChart(trend) {
+  const ctx = $('#chartRevenue');
+  if (!ctx) return;
+
+  const labels   = trend.map(d => {
+    const dt = new Date(d.date);
+    return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  });
+  const revenues = trend.map(d => d.revenue);
+
+  // Update in-place to avoid animation jump on every poll cycle
+  if (_chartRevenue) {
+    _chartRevenue.data.labels                 = labels;
+    _chartRevenue.data.datasets[0].data       = revenues;
+    _chartRevenue.update('none'); // 'none' = skip animation
+    return;
+  }
+
+  _chartRevenue = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Revenue ($)',
+        data: revenues,
+        borderColor: '#C9A84C',
+        backgroundColor: 'rgba(201,168,76,0.12)',
+        borderWidth: 2,
+        pointRadius: 3,
+        pointBackgroundColor: '#C9A84C',
+        fill: true,
+        tension: 0.4,
+      }],
+    },
+    options: {
+      responsive: true,
+      animation: { duration: 600 },
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b8b8b', font: { size: 11 } } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b8b8b', font: { size: 11 }, callback: v => '$' + v } },
+      },
+    },
+  });
+}
+
+function renderPeakHoursChart(peakData) {
+  const ctx = $('#chartPeakHours');
+  if (!ctx) return;
+
+  const labels = peakData.hours.map((_, i) => `${String(i).padStart(2,'0')}:00`);
+  const values = peakData.hours;
+  const maxVal = Math.max(...values);
+
+  const colors = values.map(v =>
+    v === maxVal && maxVal > 0 ? 'rgba(201,168,76,0.85)' : 'rgba(100,149,237,0.55)'
+  );
+
+  // Update in-place to avoid animation jump on every poll cycle
+  if (_chartPeakHours) {
+    _chartPeakHours.data.datasets[0].data            = values;
+    _chartPeakHours.data.datasets[0].backgroundColor = colors;
+    _chartPeakHours.update('none');
+    return;
+  }
+
+  _chartPeakHours = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Orders',
+        data: values,
+        backgroundColor: colors,
+        borderRadius: 4,
+      }],
+    },
+    options: {
+      responsive: true,
+      animation: { duration: 600 },
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#8b8b8b', font: { size: 9 }, maxRotation: 45 } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8b8b8b', font: { size: 11 }, stepSize: 1 } },
+      },
+    },
+  });
+}
+
+function renderPopularItems(items) {
+  const container = $('#popularItemsList');
+  if (!container) return;
+
+  if (!items || items.length === 0) {
+    container.innerHTML = `<div style="text-align:center;color:var(--text-3);padding:24px;">No order data yet — place some orders to see popular items.</div>`;
+    return;
+  }
+
+  const maxOrdered = Math.max(...items.map(i => +i.total_ordered));
+
+  container.innerHTML = `
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Item</th>
+          <th>Times Ordered</th>
+          <th>In Orders</th>
+          <th>Popularity</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${items.map((item, idx) => {
+          const pct = maxOrdered > 0 ? Math.round((+item.total_ordered / maxOrdered) * 100) : 0;
+          const medal = idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : `${idx + 1}.`;
+          return `
+            <tr>
+              <td style="font-size:1.1rem;">${medal}</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  ${item.image_url
+                    ? `<img src="${item.image_url}" alt="${item.name}"
+                            style="width:36px;height:36px;border-radius:6px;object-fit:cover;">`
+                    : `<div style="width:36px;height:36px;border-radius:6px;background:var(--surface-2);display:flex;align-items:center;justify-content:center;font-size:1.1rem;">🍽</div>`
+                  }
+                  <strong>${item.name}</strong>
+                </div>
+              </td>
+              <td><span class="badge badge-amber">${item.total_ordered}×</span></td>
+              <td style="color:var(--text-2);font-size:.85rem;">${item.order_appearances} order${item.order_appearances != 1 ? 's' : ''}</td>
+              <td style="min-width:120px;">
+                <div style="background:var(--surface-2);border-radius:99px;height:8px;overflow:hidden;">
+                  <div style="height:100%;width:${pct}%;background:var(--gold);border-radius:99px;transition:width .4s;"></div>
+                </div>
+              </td>
+            </tr>`;
+        }).join('')}
+      </tbody>
+    </table>`;
+}
+
+// When the user navigates away from analytics, pause auto-refresh
+document.addEventListener('click', e => {
+  const navItem = e.target.closest('.nav-item');
+  if (navItem && navItem.dataset.section !== 'analytics') {
+    _analyticsOpen = false;
+  }
+});
 
 // ================================================================
 // QR MODAL

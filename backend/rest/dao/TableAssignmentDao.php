@@ -11,7 +11,6 @@ class TableAssignmentDao
 
     /**
      * Assign (or reassign) a waiter to a table.
-     * UNIQUE KEY on table_id means a duplicate triggers an UPDATE instead of INSERT.
      */
     public function assign(int $tableId, int $waiterId, int $assignedBy): array
     {
